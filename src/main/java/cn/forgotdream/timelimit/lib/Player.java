@@ -29,6 +29,7 @@ public class Player {
     public void reset(float left_time){
         this.BANNED = false;
         this.LEFT_TIME = left_time;
+        login();
     }
     public void set_limited_status(boolean status){
         this.LIMITED = status;

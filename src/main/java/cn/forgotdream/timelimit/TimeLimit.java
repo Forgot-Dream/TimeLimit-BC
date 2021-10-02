@@ -62,8 +62,10 @@ public final class TimeLimit extends Plugin implements Listener {
     }
     public void reset_all() {
         for (String i : PLAYERS.keySet()) {
-            if (PLAYERS.get(i).LIMITED) {
-                PLAYERS.get(i).reset(configs.TIME_MAX * 1000);
+            Player player = PLAYERS.get(i);
+            if (player.LIMITED) {
+                player.reset(configs.TIME_MAX * 1000);
+                PLAYERS.replace(i,player);
             }
         }
     }

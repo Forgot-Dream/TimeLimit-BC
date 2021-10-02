@@ -42,7 +42,6 @@ public class Commands extends Command implements TabExecutor {
         final boolean commandAuth = sender.hasPermission("timelimit.command.all");
         final BaseComponent[] error_args_warn_message = new ComponentBuilder("[TimeLimit]参数不完整或参数错误，请检查你输入的参数").color(ChatColor.YELLOW).create();
         final BaseComponent[] no_permission_warn_message = new ComponentBuilder("[TimeLimit]你没有权限执行这个指令").color(ChatColor.DARK_RED).create();
-        final BaseComponent[] not_find_message = new ComponentBuilder("[TimeLimit]未找到玩家 请核实玩家ID").color(ChatColor.DARK_RED).create();
         final BaseComponent[] reset_all_message = new ComponentBuilder("[TimeLimit]已重置所有玩家的游戏时长").color(ChatColor.AQUA).create();
         if(args.length != 0) {
             switch (args[0]) {
@@ -50,13 +49,16 @@ public class Commands extends Command implements TabExecutor {
                     if (!commandAuth) {
                         sender.sendMessage(no_permission_warn_message);
                     } else if (commandAuth && args.length > 1) {
+                        ComponentBuilder reset_respond_message = new ComponentBuilder("[TimeLimit]已重置以下玩家的游戏时长： ").color(ChatColor.AQUA);
                         for (int i = 1; i < args.length; i++) {
                             if (main.PLAYERS.containsKey(args[i])) {
-                                main.PLAYERS.get(args[i]).reset(main.configs.TIME_MAX * 1000);
-                            } else {
-                                sender.sendMessage(not_find_message);
+                                Player player = main.PLAYERS.get(args[i]);
+                                player.reset(main.configs.TIME_MAX*1000);
+                                main.PLAYERS.replace(args[i],player);
+                                reset_respond_message.append(args[i]).color(ChatColor.YELLOW).bold(true);
                             }
                         }
+                        sender.sendMessage(reset_respond_message.append("\n[TimeLimit]未重置的玩家为无法找到数据").color(ChatColor.DARK_RED).bold(true).create());
                     } else {
                         sender.sendMessage(error_args_warn_message);
                     }
@@ -97,12 +99,10 @@ public class Commands extends Command implements TabExecutor {
                     } else if (commandAuth && args.length > 1) {
                         ComponentBuilder del_respond_message = new ComponentBuilder("[TimeLimit]已为以下玩家删除不限时: ").color(ChatColor.AQUA);
                         for (int i = 1; i < args.length; i++) {
-                            if (main.configs.NO_LIMIT_PLAYERS.contains(args[i])) {
-                                main.configs.NO_LIMIT_PLAYERS.remove(args[i]);
-                            }
+                            main.configs.NO_LIMIT_PLAYERS.remove(args[i]);
                             if (main.PLAYERS.containsKey(args[i])) {
                                 Player player = main.PLAYERS.get(args[i]);
-                                player.set_limited_status(false);
+                                player.set_limited_status(true);
                                 player.reset(main.configs.TIME_MAX * 1000);
                                 main.PLAYERS.replace(args[i], player);
                             }
