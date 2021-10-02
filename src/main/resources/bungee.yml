@@ -1,0 +1,5 @@
+name: TimeLimit
+version: ${project.version}
+main: cn.forgotdream.timelimit.TimeLimit
+description: TimeLimit
+author: Forgot_Dream

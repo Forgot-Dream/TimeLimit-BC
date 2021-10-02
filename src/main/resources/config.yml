@@ -1,0 +1,6 @@
+last_boot_time: 0 #上次启动时间戳，！！请留空让它自行生成！！
+enabled: false #是否启用 / Whether to enable
+time_max: 7200 #以秒(s)为单位 / In seconds(s)
+no_limited_players: #不受限制的玩家 / Unrestricted player
+  - Steve
+  - Alex
